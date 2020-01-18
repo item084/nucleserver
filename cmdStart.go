@@ -27,7 +27,9 @@ func CmdStart(c *cli.Context) error {
 	port := c.Int("port")
 	root := c.String("root")
 	local := c.Bool("local")
+	subdir := c.String("subdir")
 	customCors := c.String("cors")
+	log.Println("Subdir: " + subdir)
 
 	corsOptions := nbdata.GetCors(customCors)
 	mkdir(root)
@@ -41,12 +43,12 @@ func CmdStart(c *cli.Context) error {
 		}
 	}
 
-	s := box.NewBox("NucleServer", VERSION).Port(port).CorsOptions(&corsOptions)
+	s := box.NewBox(subdir, "NucleServer", VERSION).Port(port).CorsOptions(&corsOptions)
 	router := s.GetRouter()
 
 	idxRoot := filepath.Join(root, "index")
 	mkdir(idxRoot)
-	l := data.NewLoader(idxRoot)
+	l := data.NewLoader(subdir, idxRoot)
 	l.Plugins["tsv"] = nbdata.PluginTsv
 	if uri != "" {
 		l.Load(uri, router)

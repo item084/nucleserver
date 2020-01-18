@@ -69,6 +69,12 @@ func main() {
 					Usage: "add Customized CORS access",
 					Value: "",
 				},
+				&cli.StringFlag{
+					Name:    "subdir", // customize
+					Aliases: []string{"d"},
+					Usage:   "sub directory",
+					Value:   "",
+				},
 			},
 		},
 		{
@@ -81,6 +87,12 @@ func main() {
 					Aliases: []string{"r"},
 					Usage:   "root directory",
 					Value:   home,
+				},
+				&cli.StringFlag{
+					Name:    "subdir", // customize
+					Aliases: []string{"d"},
+					Usage:   "sub directory",
+					Value:   "",
 				},
 				&cli.IntFlag{
 					Name:    "port",

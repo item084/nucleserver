@@ -40,6 +40,7 @@ func ls(dir string) []os.FileInfo {
 func CmdFile(c *cli.Context) error {
 	root := c.String("root")
 	port := c.Int("port")
+	subdir := c.String("subdir")
 	router := mux.NewRouter()
 	//cors := data.CorsFactory(CORS)
 	customCors := c.String("cors")
@@ -66,7 +67,7 @@ func CmdFile(c *cli.Context) error {
 			w.Write([]byte("error"))
 		}
 	})
-	router.PathPrefix("/get").Handler(http.StripPrefix("/get", http.FileServer(http.Dir(root))))
+	router.PathPrefix("/" + subdir + "/get").Handler(http.StripPrefix("/" + subdir + "/get", http.FileServer(http.Dir(root + "/" + subdir))))
 	hc := cors.New(corsOptions)
 	handler := hc.Handler(router)
 	server := &http.Server{Addr: ":" + strconv.Itoa(port), Handler: handler}
